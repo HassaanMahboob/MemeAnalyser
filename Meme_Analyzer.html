@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <center>
+<h1>
+    MEME ANALYZER</h1>
+<h2>
+Upload Image:</h2>
+
+<input type="file"  accept="image/*"><br><br>
+<img src="" alt="">
+<button id="pred_button" onclick="is_meme()">Predict Is Meme?</button>
+<button id="pred_button" onclick="is_hateful_meme()">Predict Is Hateful?</button>
+<p id="Answer"></p>
+</center>
+<script>
+        function is_meme()
+        {
+            var demoImage = document.querySelector('img');
+            var file = document.querySelector('input[type=file]').files[0];
+            var reader = new FileReader();
+            reader.addEventListener("load", function () { // Setting up base64 URL on image
+                
+                var request = new XMLHttpRequest();
+                request.open('POST', 'http://127.0.0.1:8000/is_meme/', true);
+                request.send(reader.result);
+                request.onreadystatechange = function()
+                {
+                    var data = request.response;
+                    console.log(data)
+                    document.getElementById("Answer").innerHTML = data;
+                }
+                demoImage.src = reader.result;
+            }, false);
+            reader.readAsDataURL(file);
+        }
+        function is_hateful_meme()
+        {
+            var demoImage = document.querySelector('img');
+            var file = document.querySelector('input[type=file]').files[0];
+            var reader = new FileReader();
+            reader.addEventListener("load", function () { // Setting up base64 URL on image
+                
+                var request = new XMLHttpRequest();
+                request.open('POST', 'http://127.0.0.1:8000/is_hateful_meme/', true);
+                request.send(reader.result);
+                request.onreadystatechange = function()
+                {
+                    var data = request.response;
+                    console.log(data)
+                    document.getElementById("Answer").innerHTML = data;
+                }
+                demoImage.src = reader.result;
+            }, false);
+            reader.readAsDataURL(file);
+        }
+</script>
+</body>
+</html>
